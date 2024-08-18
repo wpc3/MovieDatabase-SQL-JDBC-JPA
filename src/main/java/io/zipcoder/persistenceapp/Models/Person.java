@@ -1,18 +1,19 @@
 package io.zipcoder.persistenceapp.Models;
 
 import javax.xml.crypto.Data;
+import java.util.Date;
 
 public class Person {
     private int id;
     private String firstName;
     private String lastName;
     private String mobile;
-    private Data birthday;
+    private Date birthday;
     private int homeID;
 
     public Person(){}
 
-    public Person(String firstName, String  lastName, String mobile, Data birthday, int homeID){
+    public Person(String firstName, String  lastName, String mobile, Date birthday, int homeID){
         this.firstName = firstName;
         this.lastName = lastName;
         this.mobile = mobile;
@@ -20,7 +21,7 @@ public class Person {
         this.homeID = homeID;
     }
 
-    public Person(int id, String firstName, String  lastName, String mobile, Data birthday, int homeID) {
+    public Person(int id, String firstName, String  lastName, String mobile, Date birthday, int homeID) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -61,11 +62,11 @@ public class Person {
         this.mobile = mobile;
     }
 
-    public Data getBirthday() {
+    public Date getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(Data birthday) {
+    public void setBirthday(Date birthday) {
         this.birthday = birthday;
     }
 
