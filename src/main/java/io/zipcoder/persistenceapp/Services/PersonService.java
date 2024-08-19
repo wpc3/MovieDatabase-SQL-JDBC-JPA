@@ -8,7 +8,7 @@ import java.sql.*;
 import java.util.List;
 
 @Service
-public class PersonService implements ServiceInterFace {
+public class PersonService implements ServiceInterFace<Person> {
 
     private static final String URL = "jdbc:mysql://localhost:3306/movieTheatre";
     private static final String USER = "root";
@@ -46,14 +46,46 @@ public class PersonService implements ServiceInterFace {
     }
 
     @Override
-    public Object create(Object o) {
+    public Person create(Person o) {
+        String query = "INSERT INTO PERSON (FIRST_NAME,LAST_NAME,MOBILE,BIRTHDAY,HOME_ID) VALUES (?,?,?,?,?)";
+        try {
+            Connection connection = getConnection();
+            PreparedStatement pstm = connection.prepareStatement(query,Statement.RETURN_GENERATED_KEYS);
 
-        return null;
+
+            pstm.setString(1, o.getFirstName());
+            pstm.setString(2, o.getLastName());
+            pstm.setString(3, o.getMobile());
+            pstm.setDate(4,  new java.sql.Date(o.getBirthday().getTime()));
+            pstm.setInt(5, o.getHomeID());
+            pstm.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return o;
     }
 
     @Override
-    public Object update(Object o) {
-        return null;
+    public Person update(Person o) {
+        String query = "UPDATE PERSON SET FIRST_NAME = ?, LAST_NAME = ?, MOBILE = ?, BIRTHDAY = ?, HOME_ID = ? WHERE ID = ?";
+        try {
+            Connection connection = getConnection();
+            PreparedStatement pstm = connection.prepareStatement(query,Statement.RETURN_GENERATED_KEYS);
+
+
+            pstm.setString(1, o.getFirstName());
+            pstm.setString(2, o.getLastName());
+            pstm.setString(3, o.getMobile());
+            pstm.setDate(4,  new java.sql.Date(o.getBirthday().getTime()));
+            pstm.setInt(5, o.getHomeID());
+            pstm.setInt(6,o.getId());
+            pstm.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return o;
     }
 
     @Override

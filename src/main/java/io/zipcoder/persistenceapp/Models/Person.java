@@ -1,6 +1,5 @@
 package io.zipcoder.persistenceapp.Models;
 
-import javax.xml.crypto.Data;
 import java.util.Date;
 
 public class Person {
