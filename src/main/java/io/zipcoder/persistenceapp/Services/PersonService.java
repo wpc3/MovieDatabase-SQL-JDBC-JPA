@@ -94,7 +94,7 @@ public class PersonService implements ServiceInterFace<Person> {
     @Override
     public List<Person> findAll() {
         List<Person> persons = new ArrayList<>();
-        Set peson1 = new HashSet<>();
+
         String query = "SELECT * FROM PERSON";
         try {
             Connection connection = getConnection();
@@ -106,14 +106,6 @@ public class PersonService implements ServiceInterFace<Person> {
                        resultSet.getInt("ID"),resultSet.getString("FIRST_NAME"),resultSet.getString("LAST_NAME"),resultSet.getString("MOBILE"),resultSet.getDate("BIRTHDAY"),resultSet.getInt("HOME_ID"));
 
                         persons.add(person);
-
-//               persons.add(new Person(resultSet.getInt("ID"),resultSet.getString("FIRST_NAME"),resultSet.getString("LAST_NAME"),resultSet.getString("MOBILE"),resultSet.getDate("BIRTHDAY"),resultSet.getInt("HOME_ID")));
-
-
-//               Person person = ex
-//               peson1.add(new Person(resultSet.getInt("ID"),resultSet.getString("FIRST_NAME"),resultSet.getString("LAST_NAME"),resultSet.getString("MOBILE"),resultSet.getDate("BIRTHDAY"),resultSet.getInt("HOME_ID")));
-
-//               System.out.println(peson1);
            }
             System.out.println(persons);
 
@@ -126,6 +118,42 @@ public class PersonService implements ServiceInterFace<Person> {
 
     @Override
     public void deleteID(int id) {
+        String query = "DELETE FROM PERSON WHERE ID = ?";
+        try {
+            Connection connection = getConnection();
+            PreparedStatement psmt = connection.prepareStatement(query);
+            psmt.setInt(1,id);
+            psmt.executeUpdate();
+            System.out.println("Deleted Person");
 
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    public List<Person> findAllByLastName(String last){
+        List<Person> persons = new ArrayList<>();
+
+        String query = "SELECT * FROM PERSON WHERE LAST_NAME =?";
+        try {
+            Connection connection = getConnection();
+            PreparedStatement psmt = connection.prepareStatement(query);
+            psmt.setString(1,last);
+            ResultSet resultSet = psmt.executeQuery();
+
+            while (resultSet.next()){
+                Person person = new Person(
+                        resultSet.getInt("ID"),resultSet.getString("FIRST_NAME"),resultSet.getString("LAST_NAME"),resultSet.getString("MOBILE"),resultSet.getDate("BIRTHDAY"),resultSet.getInt("HOME_ID"));
+
+                persons.add(person);
+            }
+            System.out.println(persons);
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return null;
     }
 }

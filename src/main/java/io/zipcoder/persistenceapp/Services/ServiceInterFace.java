@@ -8,5 +8,4 @@ public interface ServiceInterFace <T> {
     T update(T t);
     List<T> findAll();
     void deleteID(int id);
-
 }
