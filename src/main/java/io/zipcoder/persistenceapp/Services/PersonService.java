@@ -5,7 +5,10 @@ import org.springframework.stereotype.Service;
 
 import javax.xml.crypto.Data;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class PersonService implements ServiceInterFace<Person> {
@@ -89,9 +92,37 @@ public class PersonService implements ServiceInterFace<Person> {
     }
 
     @Override
-    public List findAll() {
+    public List<Person> findAll() {
+        List<Person> persons = new ArrayList<>();
+        Set peson1 = new HashSet<>();
+        String query = "SELECT * FROM PERSON";
+        try {
+            Connection connection = getConnection();
+            PreparedStatement psmt = connection.prepareStatement(query);
+            ResultSet resultSet = psmt.executeQuery();
+
+           while (resultSet.next()){
+               Person person = new Person(
+                       resultSet.getInt("ID"),resultSet.getString("FIRST_NAME"),resultSet.getString("LAST_NAME"),resultSet.getString("MOBILE"),resultSet.getDate("BIRTHDAY"),resultSet.getInt("HOME_ID"));
+
+                        persons.add(person);
+
+//               persons.add(new Person(resultSet.getInt("ID"),resultSet.getString("FIRST_NAME"),resultSet.getString("LAST_NAME"),resultSet.getString("MOBILE"),resultSet.getDate("BIRTHDAY"),resultSet.getInt("HOME_ID")));
+
+
+//               Person person = ex
+//               peson1.add(new Person(resultSet.getInt("ID"),resultSet.getString("FIRST_NAME"),resultSet.getString("LAST_NAME"),resultSet.getString("MOBILE"),resultSet.getDate("BIRTHDAY"),resultSet.getInt("HOME_ID")));
+
+//               System.out.println(peson1);
+           }
+            System.out.println(persons);
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
         return null;
     }
+
 
     @Override
     public void deleteID(int id) {
