@@ -1,6 +1,7 @@
 package io.zipcoder.persistenceapp.Services;
 
 import io.zipcoder.persistenceapp.Models.Person;
+import org.apache.catalina.servlet4preview.http.PushBuilder;
 import org.springframework.stereotype.Service;
 
 import javax.xml.crypto.Data;
@@ -140,6 +141,56 @@ public class PersonService implements ServiceInterFace<Person> {
             Connection connection = getConnection();
             PreparedStatement psmt = connection.prepareStatement(query);
             psmt.setString(1,last);
+            ResultSet resultSet = psmt.executeQuery();
+
+            while (resultSet.next()){
+                Person person = new Person(
+                        resultSet.getInt("ID"),resultSet.getString("FIRST_NAME"),resultSet.getString("LAST_NAME"),resultSet.getString("MOBILE"),resultSet.getDate("BIRTHDAY"),resultSet.getInt("HOME_ID"));
+
+                persons.add(person);
+            }
+            System.out.println(persons);
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return null;
+    }
+
+    public List<Person> findAllByFirstName(String first){
+        List<Person> persons = new ArrayList<>();
+
+        String query = "SELECT * FROM PERSON WHERE FIRST_NAME =?";
+        try {
+            Connection connection = getConnection();
+            PreparedStatement psmt = connection.prepareStatement(query);
+            psmt.setString(1,first);
+            ResultSet resultSet = psmt.executeQuery();
+
+            while (resultSet.next()){
+                Person person = new Person(
+                        resultSet.getInt("ID"),resultSet.getString("FIRST_NAME"),resultSet.getString("LAST_NAME"),resultSet.getString("MOBILE"),resultSet.getDate("BIRTHDAY"),resultSet.getInt("HOME_ID"));
+
+                persons.add(person);
+            }
+            System.out.println(persons);
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return null;
+    }
+
+    public List<Person> findAllByBirthday(Date bd){
+        List<Person> persons = new ArrayList<>();
+
+        String query = "SELECT * FROM PERSON WHERE BIRTHDAY =?";
+        try {
+            Connection connection = getConnection();
+            PreparedStatement psmt = connection.prepareStatement(query);
+            psmt.setDate(1,bd);
             ResultSet resultSet = psmt.executeQuery();
 
             while (resultSet.next()){
